@@ -34,6 +34,14 @@ export default function Home() {
         console.log("error:", err);
       });
   };
+  const green = (data) => {
+    for (let i = 0; i < data.length; i += 4) {
+      data[i] = data[i] - 100; // Invert Red
+      data[i + 1] = data[i + 1] - 100 + 100; // Invert Green
+      data[i + 2] = data[i + 2] - 100; // Invert Blue
+      // data[i + 3] = data[i + 3];
+    }
+  };
 
   const paintToCanvas = () => {
     let video = videoRef.current;
@@ -50,6 +58,7 @@ export default function Home() {
       const scannedImage = ctx.getImageData(0, 0, photo.width, photo.height);
       const scannedData = scannedImage.data;
       const pixelationFactor = 6;
+      green(scannedData);
       for (let y = 0; y < photo.height; y += pixelationFactor) {
         for (let x = 0; x < photo.width; x += pixelationFactor) {
           // extracting the position of the sample pixel
@@ -81,11 +90,21 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <h1>AEX</h1>
-      <button onClick={() => takePhoto()}>Take a photo</button>
-      <video hidden ref={videoRef} onCanPlay={() => paintToCanvas()} />
-      <canvas ref={photoRef} />
-      <div className="photo-booth">
-        <div ref={stripRef} className="strip" />
+      <div className={styles.display}>
+        <div>
+          <video hidden ref={videoRef} onCanPlay={() => paintToCanvas()} />
+          <canvas className={styles.facecanvas} ref={photoRef} />
+        </div>
+        <div className={styles.actions}>
+          <button className={styles.cameraswitch}>SWITCH</button>
+          <button
+            className={styles.cameratrigger}
+            onClick={() => takePhoto()}
+          ></button>
+          <div className={styles.photobooth}>
+            <div ref={stripRef} className={styles.strip} />
+          </div>
+        </div>
       </div>
     </main>
   );
