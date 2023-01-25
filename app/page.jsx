@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useTransition } from "react";
 import Image from "next/image";
 import { Inter } from "@next/font/google";
 import styles from "./page.module.css";
@@ -7,15 +7,23 @@ import styles from "./page.module.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modal, setModal] = useState(false);
+  const [photos, setPhotos] = useState([]);
   const videoRef = useRef(null);
   const photoRef = useRef(null);
   const stripRef = useRef(null);
   const lastPicRef = useRef(null);
+  const galleryCoverRef = useRef(null);
 
   useEffect(() => {
     getVideo();
   }, [videoRef]);
+
+  useEffect(() => {
+    if (!modal) {
+      takePhoto();
+    }
+  }, [modal]);
 
   const getVideo = () => {
     navigator.mediaDevices
@@ -87,6 +95,8 @@ export default function Home() {
     let strip = stripRef.current;
     let lastPic = lastPicRef.current;
     let photoName = namePhoto();
+    let gallery = [];
+    let galleryCover = galleryCoverRef.current;
 
     const data = photo.toDataURL("image/jpeg");
 
@@ -94,8 +104,22 @@ export default function Home() {
     link.href = data;
     link.setAttribute("download", `${photoName}`);
     link.innerHTML = `<img classname="photo" src='${data}' alt='thumbnail'/>`;
-    strip.insertBefore(link, strip.firstChild);
-    console.log(strip.firstChild);
+    setPhotos([...photos, link]);
+    // photos.map((photo) => {
+    //   console.log(photo.innerHTML);
+    // });
+    let lastPhoto = photos[0];
+    if (photos.length > 0) {
+      galleryCover.innerHTML = lastPhoto.innerHTML;
+      strip.insertBefore(link, strip.firstChild);
+      console.log(lastPhoto.innerHTML);
+    } else {
+      console.log("NO PHOTOS YET");
+    }
+    // galleryCoverRef.innerHTML = galleryCover;
+    // if (modal) {
+    //   strip.insertBefore(link, strip.firstChild);
+    // }
   };
 
   return (
@@ -112,11 +136,11 @@ export default function Home() {
             className={styles.cameratrigger}
             onClick={() => takePhoto()}
           ></button>
-          {modalIsOpen ? (
+          {modal ? (
             <div className={styles.modalcontainer}>
               <div
                 className={styles.modalbackground}
-                onClick={() => setModalIsOpen(false)}
+                onClick={() => setModal(false)}
               />
               <div className={styles.modalcontent}>
                 <div id="strip"></div>
@@ -126,7 +150,8 @@ export default function Home() {
             <div
               className={styles.galleryCover}
               id="empty-div"
-              onClick={() => setModalIsOpen(true)}
+              onClick={() => setModal(true)}
+              ref={galleryCoverRef}
             ></div>
           )}
         </div>
