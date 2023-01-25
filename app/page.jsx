@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import { Inter } from "@next/font/google";
 import styles from "./page.module.css";
@@ -7,9 +7,11 @@ import styles from "./page.module.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const videoRef = useRef(null);
   const photoRef = useRef(null);
   const stripRef = useRef(null);
+  const lastPicRef = useRef(null);
 
   useEffect(() => {
     getVideo();
@@ -75,18 +77,27 @@ export default function Home() {
       }
     }, 200);
   };
+  const namePhoto = () => {
+    const randomNumber = Math.floor(Math.random() * 100000);
+    const randomLetters = Math.random().toString(36).substring(7);
+    return `AEX${randomNumber}-${randomLetters}.jpg`;
+  };
   const takePhoto = () => {
     let photo = photoRef.current;
     let strip = stripRef.current;
+    let lastPic = lastPicRef.current;
+    let photoName = namePhoto();
 
     const data = photo.toDataURL("image/jpeg");
 
     const link = document.createElement("a");
     link.href = data;
-    link.setAttribute("download", "myWebcam");
-    link.innerHTML = `<img src='${data}' alt='thumbnail'/>`;
+    link.setAttribute("download", `${photoName}`);
+    link.innerHTML = `<img classname="photo" src='${data}' alt='thumbnail'/>`;
     strip.insertBefore(link, strip.firstChild);
+    console.log(strip.firstChild);
   };
+
   return (
     <main className={styles.main}>
       <h1>AEX</h1>
@@ -101,10 +112,25 @@ export default function Home() {
             className={styles.cameratrigger}
             onClick={() => takePhoto()}
           ></button>
-          <div className={styles.photobooth}>
-            <div ref={stripRef} className={styles.strip} />
-          </div>
+          {modalIsOpen ? (
+            <div className={styles.modalcontainer}>
+              <div
+                className={styles.modalbackground}
+                onClick={() => setModalIsOpen(false)}
+              />
+              <div className={styles.modalcontent}>
+                <div id="strip"></div>
+              </div>
+            </div>
+          ) : (
+            <div
+              className={styles.galleryCover}
+              id="empty-div"
+              onClick={() => setModalIsOpen(true)}
+            ></div>
+          )}
         </div>
+        <div className="lastpic" ref={lastPicRef}></div>
       </div>
     </main>
   );
