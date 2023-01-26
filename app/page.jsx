@@ -3,6 +3,7 @@ import { useRef, useEffect, useState, useTransition } from "react";
 import Image from "next/image";
 import { Inter } from "@next/font/google";
 import styles from "./page.module.css";
+import Gallery from "./Gallery";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -100,22 +101,31 @@ export default function Home() {
 
     const data = photo.toDataURL("image/jpeg");
 
-    const link = document.createElement("a");
-    link.href = data;
-    link.setAttribute("download", `${photoName}`);
-    link.innerHTML = `<img classname="photo" src='${data}' alt='thumbnail'/>`;
-    setPhotos([...photos, link]);
+    // const picture = document.createElement("img");
+    // picture.src = data;
+    // link.href = data;
+    // link.setAttribute("download", `${photoName}`);
+    // link.innerHTML = `<img classname="photo" src='${data}' alt='thumbnail'/>`;
+    setPhotos([...photos, data]);
+    // setPhotos([...photos, link]);
+    // console.log(photos.innerHTML);
+    // if (photos.length === 0) {
+    //   console.log("NO PHOTOS YET");
+    // } else {
+    //   console.log(photos);
+    // }
+    // strip.insertBefore(picture, strip.firstChild);
     // photos.map((photo) => {
-    //   console.log(photo.innerHTML);
+    //   console.log(photo);
     // });
-    let lastPhoto = photos[0];
-    if (photos.length > 0) {
-      galleryCover.innerHTML = lastPhoto.innerHTML;
-      strip.insertBefore(link, strip.firstChild);
-      console.log(lastPhoto.innerHTML);
-    } else {
-      console.log("NO PHOTOS YET");
-    }
+    // let lastPhoto = photos[0];
+    // if (photos.length > 0) {
+    //   galleryCover.innerHTML = lastPhoto.innerHTML;
+    //   strip.insertBefore(link, strip.firstChild);
+    //   console.log(lastPhoto.innerHTML);
+    // } else {
+    //   console.log("NO PHOTOS YET");
+    // }
     // galleryCoverRef.innerHTML = galleryCover;
     // if (modal) {
     //   strip.insertBefore(link, strip.firstChild);
@@ -143,7 +153,7 @@ export default function Home() {
                 onClick={() => setModal(false)}
               />
               <div className={styles.modalcontent}>
-                <div id="strip"></div>
+                {!photos.length ? <p>NO PHOTOS</p> : <Gallery srcs={photos} />}
               </div>
             </div>
           ) : (
