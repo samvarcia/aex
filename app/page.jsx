@@ -1,5 +1,6 @@
 "use client";
 import { useRef, useEffect, useState, useTransition } from "react";
+import { encode } from "js-base64";
 import Image from "next/image";
 import { Inter } from "@next/font/google";
 import styles from "./page.module.css";
@@ -8,10 +9,11 @@ import Gallery from "./Gallery";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  const initialImage = `data:image/png;base64,${encode("")}`;
   const [modal, setModal] = useState(false);
-  const [photos, setPhotos] = useState([]);
+  const [photos, setPhotos] = useState([initialImage]);
   const videoRef = useRef(null);
-  const photoRef = useRef(null);
+  const photoRef = useRef("");
   const stripRef = useRef(null);
   const lastPicRef = useRef(null);
   const galleryCoverRef = useRef(null);
@@ -26,6 +28,9 @@ export default function Home() {
     }
   }, [modal]);
 
+  useEffect(() => {
+    takePhoto();
+  }, []);
   const getVideo = () => {
     navigator.mediaDevices
       .getUserMedia({
@@ -91,45 +96,13 @@ export default function Home() {
     const randomLetters = Math.random().toString(36).substring(7);
     return `AEX${randomNumber}-${randomLetters}.jpg`;
   };
+
   const takePhoto = () => {
     let photo = photoRef.current;
-    let strip = stripRef.current;
-    let lastPic = lastPicRef.current;
-    let photoName = namePhoto();
-    let gallery = [];
-    let galleryCover = galleryCoverRef.current;
+    const data = photo.toDataURL();
+    console.log(data);
 
-    const data = photo.toDataURL("image/jpeg");
-
-    // const picture = document.createElement("img");
-    // picture.src = data;
-    // link.href = data;
-    // link.setAttribute("download", `${photoName}`);
-    // link.innerHTML = `<img classname="photo" src='${data}' alt='thumbnail'/>`;
-    setPhotos([...photos, data]);
-    // setPhotos([...photos, link]);
-    // console.log(photos.innerHTML);
-    // if (photos.length === 0) {
-    //   console.log("NO PHOTOS YET");
-    // } else {
-    //   console.log(photos);
-    // }
-    // strip.insertBefore(picture, strip.firstChild);
-    // photos.map((photo) => {
-    //   console.log(photo);
-    // });
-    // let lastPhoto = photos[0];
-    // if (photos.length > 0) {
-    //   galleryCover.innerHTML = lastPhoto.innerHTML;
-    //   strip.insertBefore(link, strip.firstChild);
-    //   console.log(lastPhoto.innerHTML);
-    // } else {
-    //   console.log("NO PHOTOS YET");
-    // }
-    // galleryCoverRef.innerHTML = galleryCover;
-    // if (modal) {
-    //   strip.insertBefore(link, strip.firstChild);
-    // }
+    setPhotos([data, ...photos]);
   };
 
   return (
@@ -153,7 +126,7 @@ export default function Home() {
                 onClick={() => setModal(false)}
               />
               <div className={styles.modalcontent}>
-                {!photos.length ? <p>NO PHOTOS</p> : <Gallery srcs={photos} />}
+                <Gallery srcs={photos} />
               </div>
             </div>
           ) : (

@@ -5,8 +5,7 @@ export default function gallery({ srcs }) {
   return (
     <div className={styles.gallery}>
       {srcs.map((src) => {
-        // return <img src={src} key={src} />;
-        return console.log(src);
+        return <img src={src} alt="" />;
       })}
     </div>
     // <div className={styles.gallery}>
