@@ -49,10 +49,11 @@
 .galleryCover {
   width: 50px;
   height: 50px;
-  background-color: green;
+  background-color: #4BB86A;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  border-radius: 8px;
 }
 
 /* .galleryCover img {
@@ -146,4 +147,6 @@
     width: 385px;
     height: 481.25px;
   }
+
+
 }

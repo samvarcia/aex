@@ -1,13 +1,13 @@
 .gallery {
-  /* height: 100%; */
-  grid-auto-rows: minmax(1fr, auto);
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
   border-radius: 25px;
-  /* border: 1px solid red; */
   overflow: hidden;
   overflow-y: scroll;
-  /* grid-gap: 16px; */
+  height: 100%;
+}
+
+.galleryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .gallery img {

@@ -4,9 +4,11 @@ import styles from "./gallery.module.css";
 export default function gallery({ srcs }) {
   return (
     <div className={styles.gallery}>
-      {srcs.map((src) => {
-        return <img src={src} alt="" />;
-      })}
+      <div className={styles.galleryGrid}>
+        {srcs.map((src) => {
+          return <img src={src} alt="" />;
+        })}
+      </div>
     </div>
     // <div className={styles.gallery}>
     //   {srcs.length(

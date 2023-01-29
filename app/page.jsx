@@ -106,6 +106,12 @@ export default function Home() {
     }
   };
 
+  const lastPhoto = () => {
+    console.log(photos[0])
+  }
+
+  lastPhoto()
+
   return (
     <main className={styles.main}>
       <h1>AEX</h1>
@@ -114,6 +120,7 @@ export default function Home() {
           <video hidden ref={videoRef} onCanPlay={() => paintToCanvas()} />
           <canvas className={styles.facecanvas} ref={photoRef} />
         </div>
+      </div>
         <div className={styles.actions}>
           <button className={styles.cameraswitch}>SWITCH</button>
           <button
@@ -128,7 +135,6 @@ export default function Home() {
             ref={galleryCoverRef}
           ></div>
         </div>
-      </div>
         {modal && (
           <div className={styles.modalcontainer}>
             <div className={styles.modalbackground} />
