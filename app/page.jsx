@@ -2,11 +2,10 @@
 import { useRef, useEffect, useState, useTransition } from "react";
 import { encode } from "js-base64";
 import Image from "next/image";
+import back from "../public/back.svg";
 import { Inter } from "@next/font/google";
 import styles from "./page.module.css";
 import Gallery from "./Gallery";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const initialImage = `data:image/png;base64,${encode("")}`;
@@ -17,6 +16,7 @@ export default function Home() {
   const stripRef = useRef(null);
   const lastPicRef = useRef(null);
   const galleryCoverRef = useRef(null);
+  const triggerRef = useRef(null)
 
   useEffect(() => {
     getVideo();
@@ -98,11 +98,12 @@ export default function Home() {
   };
 
   const takePhoto = () => {
-    let photo = photoRef.current;
-    const data = photo.toDataURL();
-    console.log(data);
-
-    setPhotos([data, ...photos]);
+    if(triggerRef.current === document.activeElement){
+      let photo = photoRef.current;
+      const data = photo.toDataURL();
+      setPhotos([data, ...photos]);
+      console.log('TRIGGER')
+    }
   };
 
   return (
@@ -118,28 +119,33 @@ export default function Home() {
           <button
             className={styles.cameratrigger}
             onClick={() => takePhoto()}
+            ref={triggerRef}
           ></button>
-          {modal ? (
-            <div className={styles.modalcontainer}>
-              <div
-                className={styles.modalbackground}
-                onClick={() => setModal(false)}
-              />
-              <div className={styles.modalcontent}>
-                <Gallery srcs={photos} />
-              </div>
-            </div>
-          ) : (
-            <div
-              className={styles.galleryCover}
-              id="empty-div"
-              onClick={() => setModal(true)}
-              ref={galleryCoverRef}
-            ></div>
-          )}
+          <div
+            className={styles.galleryCover}
+            id="empty-div"
+            onClick={() => setModal(true)}
+            ref={galleryCoverRef}
+          ></div>
         </div>
-        <div className="lastpic" ref={lastPicRef}></div>
       </div>
+        {modal && (
+          <div className={styles.modalcontainer}>
+            <div className={styles.modalbackground} />
+            <div className={styles.modalcontent}>
+              <div className={styles.galleryMenu}>
+                <button
+                  className={styles.backButton}
+                  onClick={() => setModal(false)}
+                >
+                  <Image src={back} priority />
+                </button>
+                <h3>GALLERY</h3>
+              </div>
+              <Gallery srcs={photos} />
+            </div>
+          </div>
+        )}
     </main>
   );
 }
