@@ -6,7 +6,7 @@ export default function gallery({ srcs }) {
   const [selectedImage, setSelectedImage] = useState(null);
 
   const handleSelectedImage = (src) => {
-    console.log("IMAGE SELECTED" + src);
+    setSelectedImage(src);
   };
   const namePhoto = () => {
     const randomNumber = Math.floor(Math.random() * 100000);
@@ -15,18 +15,25 @@ export default function gallery({ srcs }) {
   };
   return (
     <div className={styles.gallery}>
-      <div className={styles.galleryGrid}>
-        {srcs.map((src) => {
-          return (
-            <img
-              src={src}
-              // alt={namePhoto()}
-              onClick={() => handleSelectedImage(src)}
-              key={namePhoto()}
-            />
-          );
-        })}
-      </div>
+      {selectedImage ? (
+        <div className={styles.selectedImageContainer}>
+          <img src={selectedImage} alt="" />
+          <button onClick={() => setSelectedImage(null)}>Close</button>
+        </div>
+      ) : (
+        <div className={styles.galleryGrid}>
+          {srcs.map((src) => {
+            return (
+              <img
+                src={src}
+                // alt={namePhoto()}
+                onClick={() => handleSelectedImage(src)}
+                key={namePhoto()}
+              />
+            );
+          })}
+        </div>
+      )}
     </div>
     // <div className={styles.gallery}>
     //   {srcs.length(

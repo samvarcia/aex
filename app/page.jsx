@@ -103,6 +103,11 @@ export default function Home() {
 
   const lastPhoto = () => {
     // console.log(photos[0])
+    if (photos.length) {
+      console.log(photos[0]);
+    } else {
+      console.log("No photos yet");
+    }
   };
 
   lastPhoto();
@@ -128,7 +133,9 @@ export default function Home() {
           id="empty-div"
           onClick={() => setModal(true)}
           ref={galleryCoverRef}
-        ></div>
+        >
+          <img src="" alt="" />
+        </div>
       </div>
       {modal && (
         <div className={styles.modalcontainer}>
