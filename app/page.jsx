@@ -8,7 +8,7 @@ import styles from "./page.module.css";
 import Gallery from "./Gallery";
 
 export default function Home() {
-  const initialImage = `data:image/png;base64,${encode("")}`;
+  const initialImage = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAQSURBVHgBAQUA+v8AAAAAAAAFAAFkeJU4AAAAAElFTkSuQmCC`;
   const [modal, setModal] = useState(false);
   const [photos, setPhotos] = useState([initialImage]);
   const videoRef = useRef(null);
@@ -16,7 +16,7 @@ export default function Home() {
   const stripRef = useRef(null);
   const lastPicRef = useRef(null);
   const galleryCoverRef = useRef(null);
-  const triggerRef = useRef(null)
+  const triggerRef = useRef(null);
 
   useEffect(() => {
     getVideo();
@@ -31,6 +31,7 @@ export default function Home() {
   useEffect(() => {
     takePhoto();
   }, []);
+
   const getVideo = () => {
     navigator.mediaDevices
       .getUserMedia({
@@ -91,26 +92,20 @@ export default function Home() {
       }
     }, 200);
   };
-  const namePhoto = () => {
-    const randomNumber = Math.floor(Math.random() * 100000);
-    const randomLetters = Math.random().toString(36).substring(7);
-    return `AEX${randomNumber}-${randomLetters}.jpg`;
-  };
 
   const takePhoto = () => {
-    if(triggerRef.current === document.activeElement){
+    if (triggerRef.current === document.activeElement) {
       let photo = photoRef.current;
       const data = photo.toDataURL();
       setPhotos([data, ...photos]);
-      console.log('TRIGGER')
     }
   };
 
   const lastPhoto = () => {
-    console.log(photos[0])
-  }
+    // console.log(photos[0])
+  };
 
-  lastPhoto()
+  lastPhoto();
 
   return (
     <main className={styles.main}>
@@ -121,37 +116,37 @@ export default function Home() {
           <canvas className={styles.facecanvas} ref={photoRef} />
         </div>
       </div>
-        <div className={styles.actions}>
-          <button className={styles.cameraswitch}>SWITCH</button>
-          <button
-            className={styles.cameratrigger}
-            onClick={() => takePhoto()}
-            ref={triggerRef}
-          ></button>
-          <div
-            className={styles.galleryCover}
-            id="empty-div"
-            onClick={() => setModal(true)}
-            ref={galleryCoverRef}
-          ></div>
-        </div>
-        {modal && (
-          <div className={styles.modalcontainer}>
-            <div className={styles.modalbackground} />
-            <div className={styles.modalcontent}>
-              <div className={styles.galleryMenu}>
-                <button
-                  className={styles.backButton}
-                  onClick={() => setModal(false)}
-                >
-                  <Image src={back} priority />
-                </button>
-                <h3>GALLERY</h3>
-              </div>
-              <Gallery srcs={photos} />
+      <div className={styles.actions}>
+        <button className={styles.cameraswitch}>SWITCH</button>
+        <button
+          className={styles.cameratrigger}
+          onClick={() => takePhoto()}
+          ref={triggerRef}
+        ></button>
+        <div
+          className={styles.galleryCover}
+          id="empty-div"
+          onClick={() => setModal(true)}
+          ref={galleryCoverRef}
+        ></div>
+      </div>
+      {modal && (
+        <div className={styles.modalcontainer}>
+          <div className={styles.modalbackground} />
+          <div className={styles.modalcontent}>
+            <div className={styles.galleryMenu}>
+              <button
+                className={styles.backButton}
+                onClick={() => setModal(false)}
+              >
+                <Image src={back} priority alt="back" />
+              </button>
+              <h3>GALLERY</h3>
             </div>
+            <Gallery srcs={photos} />
           </div>
-        )}
+        </div>
+      )}
     </main>
   );
 }
