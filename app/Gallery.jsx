@@ -19,6 +19,9 @@ export default function gallery({ srcs }) {
         <div className={styles.selectedImageContainer}>
           <img src={selectedImage} alt="" />
           <button onClick={() => setSelectedImage(null)}>Close</button>
+          <a href={selectedImage} download={namePhoto()}>
+            DOWNLOAD
+          </a>
         </div>
       ) : (
         <div className={styles.galleryGrid}>

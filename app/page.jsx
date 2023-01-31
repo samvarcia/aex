@@ -2,10 +2,10 @@
 import { useRef, useEffect, useState, useTransition } from "react";
 import { encode } from "js-base64";
 import Image from "next/image";
-import back from "../public/back.svg";
 import { Inter } from "@next/font/google";
 import styles from "./page.module.css";
 import Gallery from "./Gallery";
+import Menu from "./Menu";
 
 export default function Home() {
   const initialImage = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAQSURBVHgBAQUA+v8AAAAAAAAFAAFkeJU4AAAAAElFTkSuQmCC`;
@@ -111,6 +111,9 @@ export default function Home() {
   };
 
   lastPhoto();
+  const closePhotoGallery = () => {
+    setModal(false);
+  };
 
   return (
     <main className={styles.main}>
@@ -141,16 +144,8 @@ export default function Home() {
         <div className={styles.modalcontainer}>
           <div className={styles.modalbackground} />
           <div className={styles.modalcontent}>
-            <div className={styles.galleryMenu}>
-              <button
-                className={styles.backButton}
-                onClick={() => setModal(false)}
-              >
-                <Image src={back} priority alt="back" />
-              </button>
-              <h3>GALLERY</h3>
-            </div>
             <Gallery srcs={photos} />
+            <Menu closeGallery={closePhotoGallery} />
           </div>
         </div>
       )}
