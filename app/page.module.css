@@ -1,7 +1,7 @@
 .main {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
   min-height: 100vh;
 }
@@ -56,13 +56,14 @@
   background-color: #4BB86A;
   background-position: center;
   background-repeat: no-repeat;
-  background-size: cover;
   border-radius: 8px;
 }
 
 .galleryCover img {
   width: 100%;
   height: 100%;
+  background-size: cover;
+
 }
 
 .strip img {
