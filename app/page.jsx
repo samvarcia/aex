@@ -101,16 +101,13 @@ export default function Home() {
     }
   };
 
-  const lastPhoto = () => {
-    // console.log(photos[0])
-    if (photos.length) {
-      console.log(photos[0]);
-    } else {
-      console.log("No photos yet");
-    }
-  };
+  // const lastPhotoCover = () => {
+  //   const lastPhotoTaken = photos[0];
+  //   console.log(lastPhotoTaken);
+  //   setLastPhoto([lastPhotoTaken, ...lastPhoto]);
+  // };
 
-  lastPhoto();
+  // lastPhotoCover();
   const closePhotoGallery = () => {
     setModal(false);
   };
@@ -137,7 +134,7 @@ export default function Home() {
           onClick={() => setModal(true)}
           ref={galleryCoverRef}
         >
-          <img src="" alt="" />
+          <img src={photos[0]} alt="" />
         </div>
       </div>
       {modal && (

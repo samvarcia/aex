@@ -1,7 +1,7 @@
 .main {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   min-height: 100vh;
 }
@@ -60,10 +60,10 @@
   border-radius: 8px;
 }
 
-/* .galleryCover img {
+.galleryCover img {
   width: 100%;
-
-} */
+  height: 100%;
+}
 
 .strip img {
   width: 50px;
