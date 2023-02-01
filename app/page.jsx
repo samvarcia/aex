@@ -74,7 +74,7 @@ export default function Home() {
       ctx.drawImage(video, 0, 0, photo.width, photo.height);
       const scannedImage = ctx.getImageData(0, 0, photo.width, photo.height);
       const scannedData = scannedImage.data;
-      const pixelationFactor = 6;
+      const pixelationFactor = 3;
       green(scannedData);
       for (let y = 0; y < photo.height; y += pixelationFactor) {
         for (let x = 0; x < photo.width; x += pixelationFactor) {
@@ -119,7 +119,7 @@ export default function Home() {
     <main className={styles.main}>
       <h1>AEX</h1>
       <div className={styles.display}>
-        <div>
+        <div className={styles.camera}>
           <video hidden ref={videoRef} onCanPlay={() => paintToCanvas()} />
           <canvas className={styles.facecanvas} ref={photoRef} />
         </div>

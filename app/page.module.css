@@ -15,9 +15,13 @@
   justify-content: space-between;
 }
 
+.camera {
+  width: 100%;
+}
+
 .facecanvas {
   width: 100%;
-  border-radius: 18px;
+  /* border-radius: 18px; */
 }
 
 .cameratrigger {
@@ -130,22 +134,26 @@
 
 @media screen and (min-width: 320px) {
   .facecanvas {
-    width: 280px;
-    height: 350px;
+    width: 100%;
+    min-height: 0;
+    padding-bottom: 20%;
   }
 }
 
 @media screen and (min-width: 375px) {
   .facecanvas {
-    width: 335px;
-    height: 418.75px;
+    width: 100%;
+    min-height: 0;
+    padding-bottom: 20%;
   }
 }
 
 @media screen and (min-width: 425px) {
   .facecanvas {
-    width: 385px;
-    height: 481.25px;
+    width: 100%;
+    min-height: 0;
+    padding-bottom: 20%;
+    ;
   }
 
 
