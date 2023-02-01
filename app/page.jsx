@@ -38,8 +38,8 @@ export default function Home() {
         audio: false,
         video: {
           facingMode: "environment",
-          width: { ideal: 1080 },
-          height: { ideal: 1350 },
+          width: { ideal: 720 },
+          height: { ideal: 900 },
         },
       })
       .then((stream) => {
