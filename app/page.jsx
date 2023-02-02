@@ -141,8 +141,7 @@ export default function Home() {
         <div className={styles.modalcontainer}>
           <div className={styles.modalbackground} />
           <div className={styles.modalcontent}>
-            <Gallery srcs={photos} />
-            <Menu closeGallery={closePhotoGallery} />
+            <Gallery srcs={photos} closeGallery={closePhotoGallery} />
           </div>
         </div>
       )}
