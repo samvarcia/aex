@@ -56,7 +56,7 @@ export default function Home() {
       data[i] = data[i] - 100; // Invert Red
       data[i + 1] = data[i + 1] - 100 + 100; // Invert Green
       data[i + 2] = data[i + 2] - 100; // Invert Blue
-      // data[i + 3] = data[i + 3];
+      // data[i + 3] = data[i + 3] - 100;
     }
   };
 

@@ -14,8 +14,8 @@ body {
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: #000;
+  color: #fafafa;
+  background: #0A0A0A;
 }
 
 a {
