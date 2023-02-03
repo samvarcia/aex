@@ -18,7 +18,12 @@ export default function Home() {
   const lastPicRef = useRef(null);
   const galleryCoverRef = useRef(null);
   const triggerRef = useRef(null);
+  const [facingMode, setFacingMode] = useState("environment");
 
+  const toggleFacingMode = () => {
+    setFacingMode(facingMode === "environment" ? "user" : "environment");
+    getVideo();
+  };
   useEffect(() => {
     getVideo();
   }, [videoRef]);
@@ -38,7 +43,7 @@ export default function Home() {
       .getUserMedia({
         audio: false,
         video: {
-          facingMode: "environment",
+          facingMode: facingMode,
           width: { ideal: 720 },
           height: { ideal: 900 },
         },
@@ -129,7 +134,7 @@ export default function Home() {
         </div>
       </div>
       <div className={styles.actions}>
-        <button className={styles.cameraswitch}>
+        <button className={styles.cameraswitch} onClick={() => toggleFacingMode()}>
           <FiRefreshCcw style={{fontSize: '35px'}}/>
         </button>
         <button
