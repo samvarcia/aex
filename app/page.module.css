@@ -35,6 +35,12 @@
   bottom: 0;
 }
 
+.cameraswitch {
+  background: none;
+  border: none;
+
+}
+
 .roll img {
   width: 50px;
   height: 62.5px;
@@ -65,7 +71,7 @@
   width: 100%;
   height: 100%;
   background-size: cover;
-
+  border-radius: 8px;
 }
 
 .strip img {
@@ -78,6 +84,7 @@
 }
 
 .modalcontainer {
+  transition: opacity 0.3s ease-in-out;
   position: fixed;
   top: 0;
   left: 0;
@@ -109,6 +116,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: opacity 0.3s ease-in-out;
 }
 
 .galleryMenu {

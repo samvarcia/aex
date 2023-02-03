@@ -6,6 +6,7 @@ import { Inter } from "@next/font/google";
 import styles from "./page.module.css";
 import Gallery from "./Gallery";
 import Menu from "./Menu";
+import {FiRefreshCcw} from 'react-icons/fi'
 
 export default function Home() {
   const initialImage = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAQSURBVHgBAQUA+v8AAAAAAAAFAAFkeJU4AAAAAElFTkSuQmCC`;
@@ -111,7 +112,13 @@ export default function Home() {
   const closePhotoGallery = () => {
     setModal(false);
   };
-
+  const deletePhoto = (exphoto) => {
+    const deletedPhoto = photos.filter(
+      photo => photo !== exphoto
+    );
+    setPhotos(deletedPhoto);
+    
+  }
   return (
     <main className={styles.main}>
       <h1>AEX</h1>
@@ -122,7 +129,9 @@ export default function Home() {
         </div>
       </div>
       <div className={styles.actions}>
-        <button className={styles.cameraswitch}>SWITCH</button>
+        <button className={styles.cameraswitch}>
+          <FiRefreshCcw style={{fontSize: '35px'}}/>
+        </button>
         <button
           className={styles.cameratrigger}
           onClick={() => takePhoto()}
@@ -141,7 +150,7 @@ export default function Home() {
         <div className={styles.modalcontainer}>
           <div className={styles.modalbackground} />
           <div className={styles.modalcontent}>
-            <Gallery srcs={photos} closeGallery={closePhotoGallery} />
+            <Gallery srcs={photos} closeGallery={closePhotoGallery} delete={deletePhoto}/>
           </div>
         </div>
       )}
