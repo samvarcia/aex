@@ -37,7 +37,18 @@ export default function Home() {
   useEffect(() => {
     takePhoto();
   }, []);
-
+  useEffect(() => {
+    const savedPhoto = JSON.parse(localStorage.getItem('AEXPHOTO'))
+    if(savedPhoto){
+      setPhotos(savedPhoto)
+    }
+  }, [])
+  const photoLocalStorage = (photo) => {
+    window.localStorage.setItem("AEXPHOTO", JSON.stringify(photo));
+    // console.log(photo)
+  };
+    
+  
   const getVideo = () => {
     navigator.mediaDevices
       .getUserMedia({
@@ -101,19 +112,12 @@ export default function Home() {
 
   const takePhoto = () => {
     if (triggerRef.current === document.activeElement) {
-      let photo = photoRef.current;
-      const data = photo.toDataURL();
+      let photoShot = photoRef.current;
+      const data = photoShot.toDataURL();
       setPhotos([data, ...photos]);
+      photoLocalStorage(photos)
     }
   };
-
-  // const lastPhotoCover = () => {
-  //   const lastPhotoTaken = photos[0];
-  //   console.log(lastPhotoTaken);
-  //   setLastPhoto([lastPhotoTaken, ...lastPhoto]);
-  // };
-
-  // lastPhotoCover();
   const closePhotoGallery = () => {
     setModal(false);
   };
@@ -122,7 +126,7 @@ export default function Home() {
       photo => photo !== exphoto
     );
     setPhotos(deletedPhoto);
-    
+    photoLocalStorage(deletedPhoto);
   }
   return (
     <main className={styles.main}>
