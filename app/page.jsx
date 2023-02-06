@@ -82,8 +82,8 @@ export default function Home() {
     let photo = photoRef.current;
     let ctx = photo.getContext("2d");
 
-    const width = 500;
-    const height = 625;
+    const width = 720;
+    const height = 900;
     photo.width = width;
     photo.height = height;
 
