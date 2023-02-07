@@ -6,7 +6,7 @@ import { Inter } from "@next/font/google";
 import styles from "./page.module.css";
 import Gallery from "./Gallery";
 import Menu from "./Menu";
-import {FiRefreshCcw} from 'react-icons/fi'
+import { FiRefreshCcw } from "react-icons/fi";
 
 export default function Home() {
   const initialImage = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAQSURBVHgBAQUA+v8AAAAAAAAFAAFkeJU4AAAAAElFTkSuQmCC`;
@@ -38,25 +38,24 @@ export default function Home() {
     takePhoto();
   }, []);
   useEffect(() => {
-    const savedPhoto = JSON.parse(localStorage.getItem('AEXPHOTO'))
-    if(savedPhoto){
-      setPhotos(savedPhoto)
+    const savedPhoto = JSON.parse(localStorage.getItem("AEXPHOTO"));
+    if (savedPhoto) {
+      setPhotos(savedPhoto);
     }
-  }, [])
+  }, []);
   const photoLocalStorage = (photo) => {
     window.localStorage.setItem("AEXPHOTO", JSON.stringify(photo));
     // console.log(photo)
   };
-    
-  
+
   const getVideo = () => {
     navigator.mediaDevices
       .getUserMedia({
         audio: false,
         video: {
           facingMode: facingMode,
-          width: { ideal: 720 },
-          height: { ideal: 900 },
+          width: { ideal: 1080 },
+          height: { ideal: 1350 },
         },
       })
       .then((stream) => {
@@ -68,12 +67,20 @@ export default function Home() {
         console.log("error:", err);
       });
   };
+  // const green = (data) => {
+  //   for (let i = 0; i < data.length; i += 4) {
+  //     data[i] = data[i] - 100; // Invert Red
+  //     data[i + 1] = data[i + 1] - 100 + 100; // Invert Green
+  //     data[i + 2] = data[i + 2] - 100; // Invert Blue
+  //     // data[i + 3] = data[i + 3] - 100;
+  //   }
+  // };
   const green = (data) => {
     for (let i = 0; i < data.length; i += 4) {
-      data[i] = data[i] - 100; // Invert Red
-      data[i + 1] = data[i + 1] - 100 + 100; // Invert Green
-      data[i + 2] = data[i + 2] - 100; // Invert Blue
-      // data[i + 3] = data[i + 3] - 100;
+      data[i] = data[i] + 120; // Invert Red
+      data[i + 1] = data[i + 1] + 200; // Invert Green
+      data[i + 2] = data[i + 2] + 80; // Invert Blue
+      // data[i + 3] = data[i + 3] + 255; // Invert Blue
     }
   };
 
@@ -82,8 +89,8 @@ export default function Home() {
     let photo = photoRef.current;
     let ctx = photo.getContext("2d");
 
-    const width = 720;
-    const height = 900;
+    const width = 1080;
+    const height = 1350;
     photo.width = width;
     photo.height = height;
 
@@ -91,7 +98,7 @@ export default function Home() {
       ctx.drawImage(video, 0, 0, photo.width, photo.height);
       const scannedImage = ctx.getImageData(0, 0, photo.width, photo.height);
       const scannedData = scannedImage.data;
-      const pixelationFactor = 3;
+      const pixelationFactor = 4;
       green(scannedData);
       for (let y = 0; y < photo.height; y += pixelationFactor) {
         for (let x = 0; x < photo.width; x += pixelationFactor) {
@@ -115,19 +122,17 @@ export default function Home() {
       let photoShot = photoRef.current;
       const data = photoShot.toDataURL();
       setPhotos([data, ...photos]);
-      photoLocalStorage(photos)
+      photoLocalStorage(photos);
     }
   };
   const closePhotoGallery = () => {
     setModal(false);
   };
   const deletePhoto = (exphoto) => {
-    const deletedPhoto = photos.filter(
-      photo => photo !== exphoto
-    );
+    const deletedPhoto = photos.filter((photo) => photo !== exphoto);
     setPhotos(deletedPhoto);
     photoLocalStorage(deletedPhoto);
-  }
+  };
   return (
     <main className={styles.main}>
       <h1>AEX</h1>
@@ -138,8 +143,11 @@ export default function Home() {
         </div>
       </div>
       <div className={styles.actions}>
-        <button className={styles.cameraswitch} onClick={() => toggleFacingMode()}>
-          <FiRefreshCcw style={{fontSize: '35px'}}/>
+        <button
+          className={styles.cameraswitch}
+          onClick={() => toggleFacingMode()}
+        >
+          <FiRefreshCcw style={{ fontSize: "35px" }} />
         </button>
         <button
           className={styles.cameratrigger}
@@ -159,7 +167,11 @@ export default function Home() {
         <div className={styles.modalcontainer}>
           <div className={styles.modalbackground} />
           <div className={styles.modalcontent}>
-            <Gallery srcs={photos} closeGallery={closePhotoGallery} delete={deletePhoto}/>
+            <Gallery
+              srcs={photos}
+              closeGallery={closePhotoGallery}
+              delete={deletePhoto}
+            />
           </div>
         </div>
       )}
