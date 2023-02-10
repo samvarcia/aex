@@ -6,21 +6,26 @@
   min-height: 100vh;
 }
 
-.display {
-  /* height: 75vh; */
+/* .display {
+  height: 75vh;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-}
+} */
 
 .camera {
+  position: relative;
   width: 100%;
 }
 
 .facecanvas {
+  position: relative;
+  display: block;
   width: 100%;
+  height: 100%;
+  z-index: 2;
   /* border-radius: 18px; */
 }
 
@@ -30,7 +35,7 @@
   border-radius: 50%;
   background-color: #E24E1C;
   cursor: pointer;
-  border: 25px solid rgba(226, 78, 28, 0.59);
+  border: 5px solid #8B3418;
   position: relative;
   bottom: 0;
 }
@@ -39,6 +44,32 @@
   background: none;
   border: none;
 
+}
+
+.display {
+
+  width: 720px;
+
+
+}
+
+.cameraContainer {
+  position: relative;
+  aspect-ratio: 1/1;
+  background-color: black;
+}
+
+.camera {
+
+  margin: auto;
+}
+
+.camera video {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
 }
 
 .roll img {
@@ -54,7 +85,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #000;
   border-radius: 15px;
 }
 
@@ -93,6 +123,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 3;
 }
 
 .modalbackground {
@@ -143,26 +174,9 @@
   width: 40px;
 }
 
-@media screen and (min-width: 320px) {
-  .facecanvas {
+@media screen and (max-width: 720px) {
+  .display {
     width: 100%;
-    min-height: 0;
-  }
-}
-
-@media screen and (min-width: 375px) {
-  .facecanvas {
-    width: 100%;
-    min-height: 0;
-  }
-}
-
-@media screen and (min-width: 425px) {
-  .facecanvas {
-    width: 100%;
-    min-height: 0;
 
   }
-
-
 }
