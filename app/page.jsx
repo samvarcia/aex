@@ -94,11 +94,9 @@ export default function Home() {
     let ctx = photo.getContext("2d");
     photo.width = 720;
     photo.height = 720;
-    console.log(video.video);
     return setInterval(() => {
       ctx.drawImage(video.video, 0, 0, photo.width, photo.height);
 
-      console.log(ctx);
       const scannedImage = ctx.getImageData(0, 0, photo.width, photo.height);
       const scannedData = scannedImage.data;
       const pixelationFactor = 4;
