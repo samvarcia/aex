@@ -6,6 +6,13 @@ import { FiDownload, FiArrowLeft, FiTrash2 } from "react-icons/fi";
 import "swiper/css";
 
 const Gallery = (props) => {
+  const [activeSlide, setActiveSlide] = useState(0);
+  const namePhoto = () => {
+    const randomNumber = Math.floor(Math.random() * 100000);
+    const randomLetters = Math.random().toString(36).substring(7);
+    return `AEX${randomNumber}-${randomLetters}.jpg`;
+  };
+
   return (
     <div className={styles.galleryContainer}>
       <div
@@ -16,26 +23,46 @@ const Gallery = (props) => {
           position: "fixed",
           display: "flex",
           alignItems: "center",
+          justifyContent: "center",
         }}
       >
-        <Swiper navigation={true}>
+        <Swiper
+          navigation={true}
+          onInit={(swiper) => {
+            setActiveSlide(swiper.realIndex);
+            // console.log(swiper.realIndex);
+          }}
+          onSlideChangeTransitionStart={(swiper) => {
+            setActiveSlide(swiper.realIndex);
+            // console.log(swiper.realIndex);
+          }}
+        >
           {props.srcs.map((src, index) => (
-            <SwiperSlide>
-              <img src={src} alt={src} style={{ width: "100%" }} />
-            </SwiperSlide>
+            <>
+              <SwiperSlide key={index}>
+                <img src={src} alt={src} style={{ width: "100%" }} />
+              </SwiperSlide>
+            </>
           ))}
+          {console.log(props.srcs[activeSlide])}
         </Swiper>
-      </div>
-      <div className={styles.galleryMenu}>
-        <button className={styles.backButton}>
-          <FiArrowLeft style={{ fontSize: "35px" }} />
-        </button>
-        <a href="">
-          <FiDownload style={{ fontSize: "35px" }} />
-        </a>
-        <button className={styles.backButton}>
-          <FiTrash2 style={{ fontSize: "35px" }} />
-        </button>
+        <div className={styles.galleryMenu}>
+          <button
+            className={styles.backButton}
+            onClick={() => props.closeGallery()}
+          >
+            <FiArrowLeft style={{ fontSize: "35px" }} />
+          </button>
+          <a href={props.srcs[activeSlide]} download={namePhoto()}>
+            <FiDownload style={{ fontSize: "35px" }} />
+          </a>
+          <button
+            className={styles.backButton}
+            onClick={() => props.delete(props.srcs[activeSlide])}
+          >
+            <FiTrash2 style={{ fontSize: "35px" }} />
+          </button>
+        </div>
       </div>
     </div>
   );
