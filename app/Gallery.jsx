@@ -44,7 +44,6 @@ const Gallery = (props) => {
               </SwiperSlide>
             </>
           ))}
-          {console.log(props.srcs[activeSlide])}
         </Swiper>
         <div className={styles.galleryMenu}>
           <button

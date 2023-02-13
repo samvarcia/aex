@@ -23,11 +23,7 @@ export default function Home() {
 
   const toggleFacingMode = () => {
     setFacingMode(facingMode === "environment" ? "user" : "environment");
-    getVideo();
   };
-  useEffect(() => {
-    getVideo();
-  }, [videoRef]);
 
   useEffect(() => {
     if (!modal) {
@@ -52,25 +48,6 @@ export default function Home() {
     paintToCanvas;
   }, [videoRef]);
 
-  const getVideo = () => {
-    navigator.mediaDevices
-      .getUserMedia({
-        audio: false,
-        video: {
-          facingMode: facingMode,
-          width: { min: 720 },
-          height: 900,
-        },
-      })
-      .then((stream) => {
-        let video = videoRef.current;
-        video.srcObject = stream;
-        video.play();
-      })
-      .catch((err) => {
-        console.log("error:", err);
-      });
-  };
   // const green = (data) => {
   //   for (let i = 0; i < data.length; i += 4) {
   //     data[i] = data[i] - 100; // Invert Red
@@ -80,11 +57,21 @@ export default function Home() {
   //   }
   // };
   const green = (data) => {
+    // for (let i = 0; i < data.length; i += 4) {
+    //   data[i] = data[i] + 120; // Invert Red
+    //   data[i + 1] = data[i + 1] + 200; // Invert Green
+    //   data[i + 2] = data[i + 2] + 80; // Invert Blue
+    //   data[i + 3] = data[i + 3] + 255; // Invert Blue
+    // }
     for (let i = 0; i < data.length; i += 4) {
-      data[i] = data[i] + 120; // Invert Red
-      data[i + 1] = data[i + 1] + 200; // Invert Green
-      data[i + 2] = data[i + 2] + 80; // Invert Blue
-      // data[i + 3] = data[i + 3] + 255; // Invert Blue
+      let red = data[i];
+      let green = data[i + 1];
+      let blue = data[i + 2];
+
+      // Keep the green channel and set the red and blue channels to 0
+      data[i] = 0;
+      data[i + 1] = green;
+      data[i + 2] = 0;
     }
   };
 
@@ -99,8 +86,8 @@ export default function Home() {
 
       const scannedImage = ctx.getImageData(0, 0, photo.width, photo.height);
       const scannedData = scannedImage.data;
-      const pixelationFactor = 4;
-      // green(scannedData);
+      const pixelationFactor = 6;
+      green(scannedData);
       if (pixelationFactor !== 0) {
         for (let y = 0; y < photo.height; y += pixelationFactor) {
           for (let x = 0; x < photo.width; x += pixelationFactor) {
