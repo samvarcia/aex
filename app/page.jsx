@@ -69,11 +69,27 @@ export default function Home() {
       let blue = data[i + 2];
 
       // Keep the green channel and set the red and blue channels to 0
-      data[i] = 0;
-      data[i + 1] = green;
-      data[i + 2] = 0;
+      data[i] = red * 0.5;
+      data[i + 1] = green * 1.4;
+      data[i + 2] = blue * 0.5;
     }
   };
+  // function customGreen(data, r, g, b) {
+  //   r = r / 255;
+  //   g = g / 255;
+  //   b = b / 255;
+
+  //   for (var i = 0; i < data.length; i += 4) {
+  //     var red = data[i];
+  //     var green = data[i + 1];
+  //     var blue = data[i + 2];
+
+  //     // Set the red, green, and blue channels to the desired values
+  //     data[i] = red * r;
+  //     data[i + 1] = green * g;
+  //     data[i + 2] = blue * b;
+  //   }
+  // }
 
   const paintToCanvas = () => {
     let video = videoRef.current;
@@ -125,6 +141,7 @@ export default function Home() {
     width: 720,
     height: 720,
     aspectRatio: 1,
+    facingMode: facingMode,
   };
   return (
     <main className={styles.main}>
