@@ -13,6 +13,7 @@ export default function Home() {
   const initialImage = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAQSURBVHgBAQUA+v8AAAAAAAAFAAFkeJU4AAAAAElFTkSuQmCC`;
   const [modal, setModal] = useState(false);
   const [photos, setPhotos] = useState([initialImage]);
+  const [color, setColor] = useState("green");
   const videoRef = useRef(null);
   const photoRef = useRef("");
   const stripRef = useRef(null);
@@ -25,6 +26,9 @@ export default function Home() {
     setFacingMode(facingMode === "environment" ? "user" : "environment");
   };
 
+  // useEffect(() => {
+  //   paintToCanvas();
+  // }, []);
   useEffect(() => {
     if (!modal) {
       takePhoto();
@@ -44,25 +48,8 @@ export default function Home() {
     window.localStorage.setItem("AEXPHOTO", JSON.stringify(photo));
     // console.log(photo)
   };
-  useEffect(() => {
-    paintToCanvas;
-  }, [videoRef]);
 
-  // const green = (data) => {
-  //   for (let i = 0; i < data.length; i += 4) {
-  //     data[i] = data[i] - 100; // Invert Red
-  //     data[i + 1] = data[i + 1] - 100 + 100; // Invert Green
-  //     data[i + 2] = data[i + 2] - 100; // Invert Blue
-  //     // data[i + 3] = data[i + 3] - 100;
-  //   }
-  // };
   const green = (data) => {
-    // for (let i = 0; i < data.length; i += 4) {
-    //   data[i] = data[i] + 120; // Invert Red
-    //   data[i + 1] = data[i + 1] + 200; // Invert Green
-    //   data[i + 2] = data[i + 2] + 80; // Invert Blue
-    //   data[i + 3] = data[i + 3] + 255; // Invert Blue
-    // }
     for (let i = 0; i < data.length; i += 4) {
       let red = data[i];
       let green = data[i + 1];
@@ -74,53 +61,142 @@ export default function Home() {
       data[i + 2] = blue * 0.5;
     }
   };
-  // function customGreen(data, r, g, b) {
-  //   r = r / 255;
-  //   g = g / 255;
-  //   b = b / 255;
+  const blue = (data) => {
+    for (let i = 0; i < data.length; i += 4) {
+      let red = data[i];
+      let green = data[i + 1];
+      let blue = data[i + 2];
 
-  //   for (var i = 0; i < data.length; i += 4) {
-  //     var red = data[i];
-  //     var green = data[i + 1];
-  //     var blue = data[i + 2];
+      // Keep the green channel and set the red and blue channels to 0
+      data[i] = red * 0.5;
+      data[i + 1] = green * 0.5;
+      data[i + 2] = blue * 1.4;
+    }
+  };
+  const red = (data) => {
+    for (let i = 0; i < data.length; i += 4) {
+      let red = data[i];
+      let green = data[i + 1];
+      let blue = data[i + 2];
 
-  //     // Set the red, green, and blue channels to the desired values
-  //     data[i] = red * r;
-  //     data[i + 1] = green * g;
-  //     data[i + 2] = blue * b;
-  //   }
-  // }
+      // Keep the green channel and set the red and blue channels to 0
+      data[i] = red * 1.4;
+      data[i + 1] = green * 0.5;
+      data[i + 2] = blue * 0.5;
+    }
+  };
+  const yellow = (data) => {
+    for (let i = 0; i < data.length; i += 4) {
+      let red = data[i];
+      let green = data[i + 1];
+      let blue = data[i + 2];
 
-  const paintToCanvas = () => {
+      // Keep the green channel and set the red and blue channels to 0
+      data[i] = red * 1.4;
+      data[i + 1] = green * 1.4;
+      data[i + 2] = blue * 0.5;
+    }
+  };
+  const tur = (data) => {
+    for (let i = 0; i < data.length; i += 4) {
+      let red = data[i];
+      let green = data[i + 1];
+      let blue = data[i + 2];
+
+      // Keep the green channel and set the red and blue channels to 0
+      data[i] = red * 1.4;
+      data[i + 1] = green * 1.4;
+      data[i + 2] = blue * 1.4;
+    }
+  };
+  const blackAndWhite = (data) => {
+    for (let i = 0; i < data.length; i += 4) {
+      let red = data[i];
+      let green = data[i + 1];
+      let blue = data[i + 2];
+
+      // Calculate the weighted average of the red, green, and blue channels
+      let gray = red * 0.3 + green * 0.59 + blue * 0.11;
+
+      // Set all color channels to the grayscale value
+      data[i] = gray;
+      data[i + 1] = gray;
+      data[i + 2] = gray;
+    }
+  };
+
+  const paintColor = (color, data) => {
+    if (color === "green") {
+      console.log("PAINT GREEN" + data);
+    }
+    if (color === "red") {
+      console.log("PAINT RED" + data);
+    }
+  };
+  const changeColor = (newTone) => {
+    const newColor = newTone;
+    setColor(newColor);
+  };
+  const paintToCanvas = (tone) => {
+    // console.log(color);
     let video = videoRef.current;
     let photo = photoRef.current;
     let ctx = photo.getContext("2d");
     photo.width = 720;
     photo.height = 720;
-    return setInterval(() => {
-      ctx.drawImage(video.video, 0, 0, photo.width, photo.height);
 
-      const scannedImage = ctx.getImageData(0, 0, photo.width, photo.height);
-      const scannedData = scannedImage.data;
-      const pixelationFactor = 6;
-      green(scannedData);
-      if (pixelationFactor !== 0) {
-        for (let y = 0; y < photo.height; y += pixelationFactor) {
-          for (let x = 0; x < photo.width; x += pixelationFactor) {
-            const pixelIndexPosition = (x + y * photo.width) * 4;
-            ctx.fillStyle = `rgba(
+    // const renderImage = (ctx, video, photo) => {};
+
+    ctx.drawImage(video.video, 0, 0, photo.width, photo.height);
+    const scannedImage = ctx.getImageData(0, 0, photo.width, photo.height);
+    const scannedData = scannedImage.data;
+    const pixelationFactor = 6;
+    // if (tone === "red") {
+    //   red(scannedData);
+    // }
+    // if (tone === "green") {
+    //   green(scannedData);
+    // }
+    switch (tone) {
+      case "red":
+        red(scannedData);
+        break;
+      case "green":
+        green(scannedData);
+        break;
+      case "blue":
+        blue(scannedData);
+        break;
+      case "yellow":
+        yellow(scannedData);
+        break;
+      case "white":
+        blackAndWhite(scannedData);
+        break;
+      default:
+        green(scannedData);
+    }
+    if (pixelationFactor !== 0) {
+      for (let y = 0; y < photo.height; y += pixelationFactor) {
+        for (let x = 0; x < photo.width; x += pixelationFactor) {
+          const pixelIndexPosition = (x + y * photo.width) * 4;
+          ctx.fillStyle = `rgba(
               ${scannedData[pixelIndexPosition]},
               ${scannedData[pixelIndexPosition + 1]},
               ${scannedData[pixelIndexPosition + 2]},
               ${scannedData[pixelIndexPosition + 3]}
               )`;
-            ctx.fillRect(x, y, pixelationFactor, pixelationFactor);
-          }
+          ctx.fillRect(x, y, pixelationFactor, pixelationFactor);
         }
       }
-    }, 100);
+    }
   };
-
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      paintToCanvas(color);
+    }, 200);
+    return () => clearInterval(intervalId);
+  }, [color]);
   const takePhoto = () => {
     if (triggerRef.current === document.activeElement) {
       let photoShot = photoRef.current;
@@ -151,9 +227,11 @@ export default function Home() {
           <div className={styles.camera}>
             {/* <video hidden ref={videoRef} onCanPlay={() => paintToCanvas()} /> */}
             <Webcam
+              onPlaying={() => {
+                paintToCanvas(color);
+              }}
               ref={videoRef}
               videoConstraints={videoConstrains}
-              onPlay={() => paintToCanvas()}
             />
             <canvas className={styles.facecanvas} ref={photoRef} />
           </div>
@@ -179,6 +257,28 @@ export default function Home() {
         >
           <FiRefreshCcw style={{ fontSize: "35px" }} />
         </button>
+      </div>
+      <div className={styles.colorPicker}>
+        <button
+          className={styles.green}
+          onClick={() => changeColor("green")}
+        ></button>
+        <button
+          className={styles.red}
+          onClick={() => changeColor("red")}
+        ></button>
+        <button
+          className={styles.blue}
+          onClick={() => changeColor("blue")}
+        ></button>
+        <button
+          className={styles.yellow}
+          onClick={() => changeColor("yellow")}
+        ></button>
+        <button
+          className={styles.white}
+          onClick={() => changeColor("white")}
+        ></button>
       </div>
       {modal && (
         <div className={styles.modalcontainer}>
