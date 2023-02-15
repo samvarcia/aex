@@ -8,7 +8,7 @@ import Gallery from "./Gallery";
 import Menu from "./Menu";
 import { FiRefreshCcw } from "react-icons/fi";
 import Webcam from "react-webcam";
-
+import AexLogo from "../public/AEXGREENLOGO.svg";
 export default function Home() {
   const initialImage = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAQSURBVHgBAQUA+v8AAAAAAAAFAAFkeJU4AAAAAElFTkSuQmCC`;
   const [modal, setModal] = useState(false);
@@ -221,7 +221,13 @@ export default function Home() {
   };
   return (
     <main className={styles.main}>
-      <h1>AEX</h1>
+      <Image
+        priority
+        src={AexLogo}
+        alt="AEX"
+        width={150}
+        style={{ margin: 20 }}
+      />
       <div className={styles.display}>
         <div className={styles.cameraContainer}>
           <div className={styles.camera}>
