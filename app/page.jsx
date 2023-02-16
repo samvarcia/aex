@@ -1,15 +1,14 @@
 "use client";
 import { useRef, useEffect, useState, useTransition } from "react";
-import { encode } from "js-base64";
 import Image from "next/image";
-import { Inter } from "@next/font/google";
 import styles from "./page.module.css";
 import Gallery from "./Gallery";
-import Menu from "./Menu";
 import { FiRefreshCcw } from "react-icons/fi";
 import Webcam from "react-webcam";
 import AexLogo from "../public/AEXGREENLOGO.svg";
+import Loader from "./Loader";
 export default function Home() {
+  const [loading, setLoading] = useState(true);
   const initialImage = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAQSURBVHgBAQUA+v8AAAAAAAAFAAFkeJU4AAAAAElFTkSuQmCC`;
   const [modal, setModal] = useState(false);
   const [photos, setPhotos] = useState([initialImage]);
@@ -26,18 +25,21 @@ export default function Home() {
     setFacingMode(facingMode === "environment" ? "user" : "environment");
   };
 
-  // useEffect(() => {
-  //   paintToCanvas();
-  // }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+  }, []);
+
   useEffect(() => {
     if (!modal) {
       takePhoto();
     }
   }, [modal]);
 
-  useEffect(() => {
-    takePhoto();
-  }, []);
+  // useEffect(() => {
+  //   takePhoto();
+  // }, []);
   useEffect(() => {
     const savedPhoto = JSON.parse(localStorage.getItem("AEXPHOTO"));
     if (savedPhoto) {
@@ -220,84 +222,90 @@ export default function Home() {
     facingMode: facingMode,
   };
   return (
-    <main className={styles.main}>
-      <Image
-        priority
-        src={AexLogo}
-        alt="AEX"
-        width={150}
-        style={{ margin: 20 }}
-      />
-      <div className={styles.display}>
-        <div className={styles.cameraContainer}>
-          <div className={styles.camera}>
-            {/* <video hidden ref={videoRef} onCanPlay={() => paintToCanvas()} /> */}
-            <Webcam
-              onPlaying={() => {
-                paintToCanvas(color);
-              }}
-              ref={videoRef}
-              videoConstraints={videoConstrains}
-            />
-            <canvas className={styles.facecanvas} ref={photoRef} />
+    <>
+      {loading ? (
+        <Loader />
+      ) : (
+        <main className={styles.main}>
+          <Image
+            priority
+            src={AexLogo}
+            alt="AEX"
+            width={150}
+            style={{ margin: 20 }}
+          />
+          <div className={styles.display}>
+            <div className={styles.cameraContainer}>
+              <div className={styles.camera}>
+                {/* <video hidden ref={videoRef} onCanPlay={() => paintToCanvas()} /> */}
+                <Webcam
+                  onPlaying={() => {
+                    paintToCanvas(color);
+                  }}
+                  ref={videoRef}
+                  videoConstraints={videoConstrains}
+                />
+                <canvas className={styles.facecanvas} ref={photoRef} />
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div className={styles.actions}>
-        <div
-          className={styles.galleryCover}
-          id="empty-div"
-          onClick={() => setModal(true)}
-          ref={galleryCoverRef}
-        >
-          <img src={photos[0]} alt="" />
-        </div>
-        <button
-          className={styles.cameratrigger}
-          onClick={() => takePhoto()}
-          ref={triggerRef}
-        ></button>
-        <button
-          className={styles.cameraswitch}
-          onClick={() => toggleFacingMode()}
-        >
-          <FiRefreshCcw style={{ fontSize: "35px" }} />
-        </button>
-      </div>
-      <div className={styles.colorPicker}>
-        <button
-          className={styles.green}
-          onClick={() => changeColor("green")}
-        ></button>
-        <button
-          className={styles.red}
-          onClick={() => changeColor("red")}
-        ></button>
-        <button
-          className={styles.blue}
-          onClick={() => changeColor("blue")}
-        ></button>
-        <button
-          className={styles.yellow}
-          onClick={() => changeColor("yellow")}
-        ></button>
-        <button
-          className={styles.white}
-          onClick={() => changeColor("white")}
-        ></button>
-      </div>
-      {modal && (
-        <div className={styles.modalcontainer}>
-          <div className={styles.modalbackground} />
-          <div className={styles.modalcontent}>
-            <Gallery
-              srcs={photos}
-              closeGallery={closePhotoGallery}
-              delete={deletePhoto}
-            />
+          <div className={styles.actions}>
+            <div
+              className={styles.galleryCover}
+              id="empty-div"
+              onClick={() => setModal(true)}
+              ref={galleryCoverRef}
+            >
+              <img src={photos[0]} alt="" />
+            </div>
+            <button
+              className={styles.cameratrigger}
+              onClick={() => takePhoto()}
+              ref={triggerRef}
+            ></button>
+            <button
+              className={styles.cameraswitch}
+              onClick={() => toggleFacingMode()}
+            >
+              <FiRefreshCcw style={{ fontSize: "35px" }} />
+            </button>
           </div>
-        </div>
+          <div className={styles.colorPicker}>
+            <button
+              className={styles.green}
+              onClick={() => changeColor("green")}
+            ></button>
+            <button
+              className={styles.red}
+              onClick={() => changeColor("red")}
+            ></button>
+            <button
+              className={styles.blue}
+              onClick={() => changeColor("blue")}
+            ></button>
+            <button
+              className={styles.yellow}
+              onClick={() => changeColor("yellow")}
+            ></button>
+            <button
+              className={styles.white}
+              onClick={() => changeColor("white")}
+            ></button>
+          </div>
+          {modal && (
+            <div className={styles.modalcontainer}>
+              <div className={styles.modalbackground} />
+              <div className={styles.modalcontent}>
+                <Gallery
+                  srcs={photos}
+                  closeGallery={closePhotoGallery}
+                  delete={deletePhoto}
+                />
+              </div>
+            </div>
+          )}
+        </main>
       )}
-    </main>
+    </>
   );
 }
