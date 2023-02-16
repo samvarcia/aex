@@ -267,7 +267,7 @@ export default function Home() {
               className={styles.cameraswitch}
               onClick={() => toggleFacingMode()}
             >
-              <FiRefreshCcw style={{ fontSize: "35px" }} />
+              <FiRefreshCcw style={{ fontSize: "35px", color: "#fff" }} />
             </button>
           </div>
           <div className={styles.colorPicker}>

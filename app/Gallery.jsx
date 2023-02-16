@@ -50,16 +50,16 @@ const Gallery = (props) => {
             className={styles.backButton}
             onClick={() => props.closeGallery()}
           >
-            <FiArrowLeft style={{ fontSize: "35px" }} />
+            <FiArrowLeft style={{ fontSize: "35px", color: "#fff" }} />
           </button>
           <a href={props.srcs[activeSlide]} download={namePhoto()}>
-            <FiDownload style={{ fontSize: "35px" }} />
+            <FiDownload style={{ fontSize: "35px", color: "#fff" }} />
           </a>
           <button
             className={styles.backButton}
             onClick={() => props.delete(props.srcs[activeSlide])}
           >
-            <FiTrash2 style={{ fontSize: "35px" }} />
+            <FiTrash2 style={{ fontSize: "35px", color: "#fff" }} />
           </button>
         </div>
       </div>
